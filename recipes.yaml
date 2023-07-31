@@ -1,0 +1,9 @@
+test:
+  shell: ""
+  export_params: false
+  commands:
+    - cmd: echo "git checkout -b release/CANCEL-{{num}}"
+  parameters:
+    - name: num
+      value: ""
+  workdir: ""
