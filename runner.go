@@ -54,8 +54,21 @@ func (r *Runner) RunRecipe(name string, args []string) {
 			cmd.Dir = command.WorkDir
 		}
 
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		switch command.OutputMode {
+		case "stderr":
+			cmd.Stdout = os.Stderr
+			break
+		case "stdout":
+			cmd.Stdout = os.Stdout
+			break
+		case "silent":
+			break
+		default:
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			break
+		}
+
 		cmd.Start()
 
 		color.New(color.FgHiMagenta).Add(color.Bold).Print("[Pid] ")
@@ -65,6 +78,9 @@ func (r *Runner) RunRecipe(name string, args []string) {
 
 		if exiterr, ok := err.(*exec.ExitError); ok {
 			color.New(color.FgRed).Add(color.Bold).Println("[Error] " + strconv.Itoa(exiterr.ExitCode()))
+			if !command.AllowFailure {
+				return
+			}
 		} else {
 			color.New(color.FgHiMagenta).Add(color.Bold).Print("[Exit] ")
 			color.New(color.FgHiCyan).Println(0)

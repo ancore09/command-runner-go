@@ -1,5 +1,5 @@
 test:
-  shell: ""
+  shell: "bash"
   export_params: false
   commands:
     - cmd: echo "git checkout -b release/CANCEL-{{num}}"
@@ -7,3 +7,11 @@ test:
     - name: num
       value: ""
   workdir: ""
+
+test2:
+  shell: "bash"
+  commands:
+    - cmd: docker ps a
+      allow_failure: true
+      output_mode: silent
+    - cmd: echo "adad"
